@@ -9,6 +9,9 @@ using namespace std;
 
 //SHIBE-DOS. An Open-Sourced dumb app i made. Made to emulate DOS but with shibe. TEST APP. This is in no way a emulator (Like dos-box) It is just a dumb app i made for the sake of shiba inus..
 /* 
+Alpha 0.6.0.pre (Pre-Release of alpha 0.6)
+-Added flip command.
+-files like write can now read all in one line. Example write shiba.txt
 Alpha 0.5
 -Improved the check command dramaticaly. Its now readible!
 -Added new program (2 actually)
@@ -59,7 +62,14 @@ namespace tools
         cout << "S:/>";
 
     }
-
+    void flip()
+    {
+        srand(time(NULL));
+        int choose = rand() % 2;
+        if (choose == 1) cout << "You flipped heads" << endl;
+        if (choose == 0) cout << "You flipped tails" << endl;
+        cout << "S:/>";
+    }
 }
 
 namespace osshit //A shitty os
@@ -67,15 +77,12 @@ namespace osshit //A shitty os
 //Utility area
 string filen;
 //Writes to file app
- void wrifile()
+ void wrifile(string& ree)
  {
-    string& filenr = filen;
-    cout << endl << "What file to write to?" << endl;
-    cin >> filenr;
-    ofstream ost{ filenr };
+    ofstream ost{ ree };
     if (!ost) 
      { 
-     cout << "FILE " << filenr << " Does not exist or was removed";
+     cout << "FILE " << ree << " Does not exist or was removed";
      cout << "CRITICAL CRASH";
      exit(0);
      }
@@ -111,25 +118,22 @@ for (; ; ) //Lazy fuckin' loop
    }   
  }
  //WIP read
- void newfile()
+ void newfile(string& ree)
  {
-     string& filenr = filen;;
-     cout << endl << "What is the file name you want to create?: " << endl;
-     cin >> filenr;
-     getline(cin, filenr);
-     ofstream ost{ filenr };
- 
+     cout << endl << "creating file " << endl;
+     ofstream ost{ ree };
+     ost << "";
+     cout << "File created";
+     cout << endl;
+     cout << "S:/>";
  }
 
 
- void read()
+ void read(string& ree)
  {
-     cout << "Read from: ";
-     string& filenr = filen;;
-     cin >> filenr;
-     ifstream ist{ filenr };
+     ifstream ist{ ree };
      if (!ist) {
-         string pref = filenr;
+         string pref = ree;
          if (ist.fail())
          {
              cin.clear();
@@ -156,7 +160,7 @@ for (; ; ) //Lazy fuckin' loop
 
  void help()
  {
-    cout << "HELP" << endl << "write -- Writes to file " << endl << "help -- runs this command" << endl << "WOOFLINE --special area + NF -- NEW FILE (THE CODE IS AN ANOMALY IT DOESN'T APPLY TO THE RULES)" << endl << "exit - i think you know what it does" << endl << "cls -- clears screen" << endl << "read -- reads file line by line" << endl << "rand_math -random math problem (multiply)" << endl << "changelog --list of changes";
+    cout << "HELP" << endl << "write -- Writes to file " << endl << "help -- runs this command" << endl << "WOOFLINE --special area + NF -- NEW FILE (THE CODE IS AN ANOMALY IT DOESN'T APPLY TO THE RULES)" << endl << "exit - i think you know what it does" << endl << "cls -- clears screen" << endl << "read -- reads file line by line" << endl << "rand_math -random math problem (multiply)" << endl << "changelog --list of changes" << endl << "flip -- flips a coin";
     cout << endl << "S:/>";
  }
  void changelog()
@@ -214,7 +218,7 @@ for (; ; ) //Lazy fuckin' loop
 using namespace osshit;
 
 //Finds what command it should run
-void choose(string& cho, string& cho1)
+void choose(string& cho, string& cho1, string& ree)
 {
 
     bool valid = false;
@@ -222,14 +226,36 @@ void choose(string& cho, string& cho1)
     //OS-Built in stuff here
     if (cho1 == "NF")
     {
-        newfile();
-    
+        if (ree == "false") {
+            cout << "ERROR. CANNOT FIND 2ND WORD IN NF";
+            say = true;
+        }
+        if (ree != "false")
+        {
+            newfile(ree);
+            say = true;
+        }
+    }
+    if (cho1 == "tes")
+    {
+        cout << ree;
         say = true;
     }
     if (cho1 == "read")
     {
-        read();
-        say = true;
+        //checks if there are more than one word
+
+        //if there is one word
+        if (ree == "false") {
+            cout << "ERROR. CANNOT FIND 2ND WORD INR READF";
+            say = true;
+        }
+        //If there is more
+        if (ree != "false")
+        {
+            read(ree);
+            say = true;
+        }
     }
     if (cho1 == "changelog")
     {
@@ -238,9 +264,16 @@ void choose(string& cho, string& cho1)
     }
     if (cho1 == "write")
     {
-        cout << "Initalizing write-command";
-        wrifile();
-        say = true;
+        if (ree == "false") {
+            cout << "ERROR. CANNOT FIND 2ND WORD IN WRITE";
+            say = true;
+        }
+        //If there is more
+        if (ree != "false")
+        {
+            wrifile(ree);
+            say = true;
+        }
     }
     if (cho1 == "help")
     {
@@ -273,6 +306,11 @@ void choose(string& cho, string& cho1)
         say = true;
         tools::randmath();
     }
+    if (cho1 == "flip")
+    {
+        say = true;
+        tools::flip();
+    }
     if (!valid) { //Simplier from the other one. 
         cout << cho1 << cho << " is an invalid command. For the entire list of commands type help" << endl;
         cout << "S:/>";
@@ -286,10 +324,25 @@ void os_handle()
     string cho;
     while (cin)
     {
+        bool fk = false;
         cin >> cho;
         string cho1 = cho;
         getline(cin, cho, '\n');
-        choose(cho, cho1);
+       char read = cho[0];
+        if (read == NULL)
+        {
+            fk = true;
+        }
+        if (fk == false)
+        {
+            string ree = cho.substr(1);
+            choose(cho, cho1, ree);
+        }
+        if (fk == true)
+        {
+            string ree = "false";
+            choose(cho, cho1, ree);
+        }
     }
 }
 
@@ -297,7 +350,7 @@ int main()
 {
 
 bool launch = true;
-bool debug = false;
+bool debug = true;
  cout << "SHIBEDOS V-TEST-BUILD" << endl;
  cout << "Loading file critical-sys.iaf" << endl;
  ifstream ist{ "shib32/critical-sys.iaf" };
@@ -315,7 +368,7 @@ bool debug = false;
  { 
  cout << "Launching app_handler" << endl;
  ifstream ist{ "shib32/app_handle.iaf" };
- if (!ist)
+ if (!ist && !debug)
  {
      cout << "Failed to launch because the system cannot launch system apps. Please re-install to continue";
      launch = false;
@@ -330,4 +383,6 @@ bool debug = false;
  }
  }
 }
+
+
 
