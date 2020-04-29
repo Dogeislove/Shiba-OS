@@ -1,5 +1,5 @@
-IMPORTANT: PLZ INSTALL VISUAL STUDIOS FOR DIS TO WORK NOTE: 
-FOR PRE RELEASE SOURCE CODE SWITCH BRANCH!
+IMPORTANT: PLZ INSTALL VISUAL STUDIOS FOR DIS TO WORK 
+FOR NEW SNAPSHOTS GO TO THE PRE-RELESAE BRANCH. SHIBA OS 0.6 IS NOT OUT YET AND IS REQUIRES TESTING. YOU CAN TEST OUT 0.6 EARLY!
 have you ever wanted a whole os dedicated to a dog? Do you hate puppy 
 linux because there is no shibas? Well this is kind of for you. A very simple os that is more like command prompt but i coded it. 
 Its rly bad but anyways, i tried to make a shibe os. For years, the doges wanted to see a doge os. Well now they can (sort of). 
